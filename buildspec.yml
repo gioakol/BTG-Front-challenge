@@ -1,0 +1,25 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+       nodejs: 16
+    commands:
+      - npm install
+      - npm install -g yarn
+      # install dependencies
+  pre_build:
+    commands:
+      #installs dependencies into the node_modules/ directory
+      - echo Entered the pre_build phase...
+      - yarn install
+  build:
+    commands:
+      # run build script
+      - yarn build
+
+artifacts:
+  # include all files required to run application
+  # we include only the static build files
+  files:
+    - '**/*'
+  base-directory: 'build'
