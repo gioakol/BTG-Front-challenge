@@ -76,10 +76,3 @@ El proyecto está organizado de la siguiente manera:
 
 ## Licencia
 Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo LICENSE para más detalles.
-
-
---publish
-npm run build
-
---test
-npm install -D vitest
