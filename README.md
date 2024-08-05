@@ -17,6 +17,7 @@ Challenge diseñado para validar conocimientos técnicos en react y AWS, por ell
   - **Bootstrap:** Biblioteca de CSS para diseño responsivo.
 - **Servicios en la Nube:**
   - **AWS S3:** Almacenamiento de objetos en la nube, utilizado para almacenar y servir archivos estáticos.
+  - **AWS CloudFormation:** Herramienta para gestionar y aprovisionar recursos en la nube mediante plantillas en formato JSON o YAML.
 
 ## Instalación
 Para instalar y configurar el entorno de desarrollo, sigue los siguientes pasos:
@@ -62,6 +63,7 @@ El proyecto está organizado de la siguiente manera:
     ├── src/
     │   ├── assets/
     │   ├── components/
+    │     ├── api/
     ├── package.json
     ├── .env
     ├── .gitignore
