@@ -19,8 +19,8 @@ Challenge diseñado para validar conocimientos técnicos en react y AWS, por ell
   - **AWS S3:** Almacenamiento de objetos en la nube, utilizado para almacenar y servir archivos estáticos.
   - **AWS CloudFormation:** Herramienta para gestionar y aprovisionar recursos en la nube mediante plantillas en formato JSON o YAML.
 
-## Instalación
-Para instalar y configurar el entorno de desarrollo, sigue los siguientes pasos:
+## Configuración entorno desarrollo
+Para configurar el entorno de desarrollo, sigue los siguientes pasos:
 
 1. **Clona el repositorio:**
   ```bash
@@ -39,7 +39,6 @@ Para instalar y configurar el entorno de desarrollo, sigue los siguientes pasos:
 
 3. **Instala los componentes adicionales**
   ```bash
-  npm install react-bootstrap bootstrap
   npm install react-bootstrap bootstrap axios
   ```
 
