@@ -22,7 +22,6 @@ Challenge diseñado para validar conocimientos técnicos en react y AWS, por ell
 ## Instalación
 Para instalar y configurar el entorno de desarrollo, sigue los siguientes pasos:
 
-## Instalación
 1. **Clona el repositorio:**
   ```bash
     git clone https://github.com/gioakol/BTG-Front-challenge.git
