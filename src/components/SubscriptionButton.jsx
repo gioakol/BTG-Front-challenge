@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
-import axios from 'axios';
+import { subscribeTransaction, unsubscribeTransaction } from '../api/transaction';
 
 const SubscriptionButton = ({ idClient, idFund, isActive, onUpdate, onNotification, amount, minimumAmount }) => {
   const [followed, setFollowed] = useState(isActive);
@@ -14,14 +14,7 @@ const SubscriptionButton = ({ idClient, idFund, isActive, onUpdate, onNotificati
       let response;
 
       if (followed) {
-        response = await axios.put(`${import.meta.env.VITE_API_URL}/transactions/unscribe`, {
-          idClient: idClient.toString(),
-          idFund: idFund.toString()
-        }, {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
+        response = await unsubscribeTransaction(idClient, idFund);
       } else {
         
         const amountValue = parseFloat(amount);
@@ -31,23 +24,15 @@ const SubscriptionButton = ({ idClient, idFund, isActive, onUpdate, onNotificati
             return;
         }
 
-        response = await axios.post(`${import.meta.env.VITE_API_URL}/transactions/suscribe`, {
-          idClient: idClient.toString(),
-          idFund: idFund.toString(),
-          investedAmount: amountValue
-        }, {
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
+        response = await subscribeTransaction(idClient, idFund, amountValue);
       }
 
       setFollowed(!followed);
       onUpdate();
       onNotification(response.data.message);
     } catch (error) {
+      console.log(error);
       if (error.response) {
-        // Errores con respuesta HTTP
         switch (error.response.status) {
           case 401:
             onNotification(error.response.data.message);
@@ -56,10 +41,8 @@ const SubscriptionButton = ({ idClient, idFund, isActive, onUpdate, onNotificati
             onNotification('Error al actualizar el estado de suscripción.');
         }
       } else if (error.request) {
-        // Error al hacer la solicitud
         onNotification('No se recibió respuesta del servidor.');
       } else {
-        // Error al configurar la solicitud
         onNotification('Error al configurar la solicitud.');
       }
     }
