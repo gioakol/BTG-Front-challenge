@@ -63,6 +63,7 @@ El proyecto está organizado de la siguiente manera:
     ├── src/
     │   ├── assets/
     │   ├── components/
+    │     ├── api/
     ├── package.json
     ├── .env
     ├── .gitignore
