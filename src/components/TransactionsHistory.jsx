@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Modal, Table, Spinner } from 'react-bootstrap';
-import axios from 'axios';
+import { getAllFunds } from '../api/fund';
+import { getClientTransactions } from '../api/client';
 
-const TransactionsModal = ({ show, onHide }) => {
+const TransactionsModal = ({ show, onHide, idClient }) => {
     const [transactions, setTransactions] = useState([]);
     const [funds, setFunds] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -12,16 +13,16 @@ const TransactionsModal = ({ show, onHide }) => {
         const fetchData = async () => {
           try {
             const [transactionsResponse, fundsResponse] = await Promise.all([
-              axios.get(`${import.meta.env.VITE_API_URL}/clientsTransactions/getAll/1`),
-              axios.get(`${import.meta.env.VITE_API_URL}/funds/getAll`)
+              getClientTransactions(idClient), 
+              getAllFunds()
             ]);
   
-            const sortedTransactions = transactionsResponse.data.transactions.sort((a, b) => 
+            const sortedTransactions = transactionsResponse.sort((a, b) => 
               new Date(a.transactionDate) - new Date(b.transactionDate)
             );
   
             setTransactions(sortedTransactions);
-            setFunds(fundsResponse.data);
+            setFunds(fundsResponse);
           } catch (error) {
             /*console.error('Error obteniendo información de cliente:', error);*/
           } finally {
@@ -67,8 +68,9 @@ const TransactionsModal = ({ show, onHide }) => {
               <thead>
                 <tr>
                   <th>Id Transacción</th>
-                  <th>Fecha</th>
                   <th>Fondo</th>
+                  <th>Inversión</th>
+                  <th>Fecha</th>
                   <th>Status</th>
                 </tr>
               </thead>
@@ -76,8 +78,9 @@ const TransactionsModal = ({ show, onHide }) => {
                 {transactions.map(transaction => (
                   <tr key={transaction.idTransaction}>
                     <td>{transaction.idTransaction}</td>
-                    <td>{formatDateTime(transaction.transactionDate)}</td>
                     <td>{getFundDetails(transaction.idFund)}</td>
+                    <td>{transaction.investedAmount}</td>
+                    <td>{formatDateTime(transaction.transactionDate)}</td>
                     <td>{getStatusLabel(transaction.isCanceled)}</td>
                   </tr>
                 ))}

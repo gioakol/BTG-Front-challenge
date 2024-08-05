@@ -3,11 +3,13 @@ import { Container, Card, Row, Col, Button, Image, Toast } from 'react-bootstrap
 import FundsItem from './FundsItem';
 import TransactionsHistory from './TransactionsHistory';
 import NotificationButton from './NotificationButton';
-import axios from 'axios';
+import { getClientTransactionsActive } from '../api/client';
+import { getAllFunds } from '../api/fund';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import logoImage from '/public/BPAC3.SA_BIG.svg';
 
 function ClientInfo({ idClient }) {
+    
     const [modalShow, setModalShow] = useState(false);
     const [funds, setFunds] = useState([]);
     const [notification, setNotification] = useState('');
@@ -26,8 +28,8 @@ function ClientInfo({ idClient }) {
     useEffect(() => {
         const fetchClientData = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_API_URL}/clientsTransactions/getAllActive/${idClient}`);
-                const { fullName, email, phone, amount, avaiableAmount, investedAmount, transactions } = response.data;
+                const response = await getClientTransactionsActive(idClient);
+                const { fullName, email, phone, amount, avaiableAmount, investedAmount, transactions } = response;
                 setClientData({ idClient, fullName, email, phone, amount, avaiableAmount, investedAmount, transactions });
                 setNotificationsEnabled(notificationsEnabled);
             } catch (error) {
@@ -37,8 +39,8 @@ function ClientInfo({ idClient }) {
 
         const fetchFunds = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_API_URL}/funds/getAll`);
-                setFunds(response.data);
+                const response = await getAllFunds();
+                setFunds(response);
             } catch (error) {
                 /*console.error('Error obteniendo toda la información de los fondos:', error);*/
             }
@@ -57,8 +59,8 @@ function ClientInfo({ idClient }) {
 
     const handleUpdate = async () => {
         try {
-            const response = await axios.get(`${import.meta.env.VITE_API_URL}/clientsTransactions/getAllActive/${idClient}`);
-            const { amount, avaiableAmount, investedAmount } = response.data;
+            const response = await getClientTransactionsActive(idClient);
+            const { amount, avaiableAmount, investedAmount } = response;
             setClientData(prevData => ({ ...prevData, amount, avaiableAmount, investedAmount }));
         } catch (error) {
             /*console.error('Error actualizando la información de los montos:', error);*/
@@ -95,7 +97,7 @@ function ClientInfo({ idClient }) {
                         </Col>
                         <Col md={12} className="d-grid gap-2">
                             <Button variant="outline-primary" size="md" onClick={() => setModalShow(true)}> Mis suscripciones </Button>
-                            <TransactionsHistory show={modalShow} onHide={() => setModalShow(false)} />
+                            <TransactionsHistory show={modalShow} onHide={() => setModalShow(false)} idClient={idClient} />
                         </Col>
                     </Row>
                     <hr className='p-1' />
